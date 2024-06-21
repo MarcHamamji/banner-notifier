@@ -1,0 +1,15 @@
+export enum SearchableField {
+  subjects = 'get_subject',
+  instructorsCodes = 'get_instructor',
+  subjectCourseCombo = 'get_subjectcoursecombo',
+  attributes = 'get_attribute',
+  campusesCodes = 'get_campus',
+  levelsCodes = 'get_level',
+  buildingsCodes = 'get_building',
+  collegeCodes = 'get_college',
+  departmentCodes = 'get_department',
+  instructionalMethodsCodes = 'get_instructionalMethod',
+  scheduleTypesCodes = 'get_scheduleType',
+  partsOfTermCodes = 'get_partOfTerm',
+  sessionsCodes = 'get_session',
+}
