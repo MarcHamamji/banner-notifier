@@ -47,7 +47,6 @@ export async function searchCourseAndCreateLog(
     }
   } catch (error) {
     log.status = LogStatus.NetworkError;
-    console.error(JSON.stringify(error, null, 2));
   }
 
   return log;
