@@ -3,7 +3,7 @@ import React from 'react';
 import {ScrollView} from 'react-native';
 import logsStore from '../../stores/logs';
 import LogElement from './LogElement';
-import {FAB} from 'react-native-paper';
+import {FAB, Text} from 'react-native-paper';
 
 function LogsRoute(): React.JSX.Element {
   const logs = logsStore.useStoreState(state => state.logs);
@@ -25,11 +25,19 @@ function LogsRoute(): React.JSX.Element {
       />
       <ScrollView
         style={{
-          marginHorizontal: 16,
+          paddingHorizontal: 16,
         }}>
         {logs.map((log, index) => (
           <LogElement key={index} log={log} />
         ))}
+        {logs.length === 0 && (
+          <Text
+            style={{
+              margin: 16,
+            }}>
+            No logs available. Add a filter to get started.
+          </Text>
+        )}
       </ScrollView>
     </>
   );
