@@ -1,9 +1,10 @@
 import React, {useCallback, useState} from 'react';
-import {IconButton, Menu} from 'react-native-paper';
+import {IconButton, Menu, Portal, Snackbar} from 'react-native-paper';
 import useFiltersStore from '../../stores/filter';
 import useSettingsStore from '../../stores/settings';
-import useLogsStore from '../../stores/logs';
+import useLogsStore, {LogStatus} from '../../stores/logs';
 import {searchCourseAndCreateLog} from '../../courseSearch';
+import {Vibration} from 'react-native';
 
 export function FilterIcons(
   props: any,
@@ -25,6 +26,10 @@ export function FilterIcons(
   );
 
   const onPress = useCallback(async () => {
+    if (loading) {
+      return;
+    }
+
     setLoading(true);
 
     const filter = filters[filterIndex];
@@ -34,11 +39,18 @@ export function FilterIcons(
       filter.courseSearchParameters,
       filter.id,
     );
+    if (log.status === LogStatus.NetworkError) {
+      setSnackbarVisible(true);
+    } else if (log.status === LogStatus.NotFull) {
+      //Vibration.vibrate([0, 100, 100, 500]);
+      Vibration.vibrate();
+    }
+
     addLog(log);
     setLastChecked({index: filterIndex, time: Date.now()});
 
     setLoading(false);
-  }, [filters, filterIndex, setLastChecked, bannerServerURL, addLog]);
+  }, [loading, filters, filterIndex, bannerServerURL, addLog, setLastChecked]);
 
   const [menuVisible, setMenuVisible] = useState(false);
   const openMenu = () => setMenuVisible(true);
@@ -51,9 +63,28 @@ export function FilterIcons(
     }, 200);
   }, [deleteFilter, filterIndex]);
 
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+
   return (
     <>
-      <IconButton {...props} icon="play" onPress={onPress} loading={loading} />
+      <Portal>
+        <Snackbar
+          visible={snackbarVisible}
+          onIconPress={() => {
+            setSnackbarVisible(false);
+          }}
+          onDismiss={() => setSnackbarVisible(false)}>
+          Network Error. Please make sure the Banner server is reachable and try
+          again.
+        </Snackbar>
+      </Portal>
+      <IconButton
+        {...props}
+        icon="play"
+        onPress={onPress}
+        loading={loading}
+        disabled={loading}
+      />
       <Menu
         visible={menuVisible}
         onDismiss={closeMenu}
