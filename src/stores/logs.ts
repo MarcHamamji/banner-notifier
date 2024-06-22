@@ -32,8 +32,15 @@ interface LogsModel {
 const logsStore = createContextStore<LogsModel>(
   persist({
     logs: [],
-    // eslint-disable-next-line eqeqeq
-    badgeNeeded: computed(state => state.logs[0]?.seen == false),
+    badgeNeeded: computed(state => {
+      if (!state.logs[0]) {
+        return false;
+      }
+      return (
+        state.logs[0].status === LogStatus.NotFull &&
+        state.logs[0].seen === false
+      );
+    }),
     addLog: action((state, payload) => {
       state.logs.unshift(payload);
     }),
