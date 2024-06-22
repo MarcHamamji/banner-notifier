@@ -41,11 +41,11 @@ export default class BannerAPI {
       endDatepicker: '',
     });
 
-    await this.client.get(url);
+    await this.client.get(url, {timeout: 10000});
   }
 
   private async requestBannerURL<T>(url: string) {
-    const response = await this.client.get(url);
+    const response = await this.client.get(url, {timeout: 10000});
     const searchResults = response.data as T;
 
     //@ts-ignore
