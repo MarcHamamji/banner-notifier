@@ -24,7 +24,7 @@ function HomeRoute(): React.JSX.Element {
       />
       <ScrollView
         style={{
-          marginLeft: 16,
+          paddingLeft: 16,
         }}>
         {filters.map((filter, index) => (
           <FilterElement key={filter.id} filter={filter} filterIndex={index} />

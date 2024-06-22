@@ -8,6 +8,7 @@ function SettingsRoute(): React.JSX.Element {
   const bannerServerURL = settingsStore.useStoreState(
     state => state.bannerServerURL,
   );
+
   const setBannerServerURL = settingsStore.useStoreActions(
     state => state.setBannerServerURL,
   );
@@ -15,7 +16,7 @@ function SettingsRoute(): React.JSX.Element {
   return (
     <View
       style={{
-        marginHorizontal: 16,
+        paddingHorizontal: 16,
       }}>
       <TextInput
         label="Banner Server URL"
