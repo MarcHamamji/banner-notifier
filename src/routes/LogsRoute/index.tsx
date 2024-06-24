@@ -35,7 +35,8 @@ function LogsRoute(): React.JSX.Element {
             style={{
               margin: 16,
             }}>
-            No logs available. Add a filter to get started.
+            No logs available. Add a filter or wait for an existing one to run
+            to get started.
           </Text>
         )}
       </ScrollView>
