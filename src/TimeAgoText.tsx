@@ -4,7 +4,7 @@ import TimeAgo from 'react-timeago';
 import {Text} from 'react-native-paper';
 
 interface Props {
-  timestamp: number | null;
+  timestamp: number;
   prefix?: string;
   [key: string]: unknown;
 }
@@ -18,9 +18,7 @@ function TimeAgoText({timestamp, prefix, ...props}: Props): React.JSX.Element {
     [prefix],
   );
 
-  return timestamp === null ? (
-    <Text>never</Text>
-  ) : (
+  return (
     <TimeAgo
       formatter={formatter}
       date={timestamp}
