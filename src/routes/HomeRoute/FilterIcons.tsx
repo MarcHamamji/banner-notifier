@@ -47,8 +47,8 @@ export function FilterIcons(
     }
 
     addLog(log);
-    setLastChecked({index: filterIndex, time: Date.now()});
 
+    setLastChecked({index: filterIndex, time: Date.now()});
     setLoading(false);
   }, [loading, filters, filterIndex, bannerServerURL, addLog, setLastChecked]);
 

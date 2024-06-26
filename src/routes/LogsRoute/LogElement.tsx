@@ -1,10 +1,10 @@
 import React from 'react';
-
 import {List, useTheme} from 'react-native-paper';
+
 import {Log, LogStatus} from '../../stores/logs';
 import filtersStore from '../../stores/filter';
 import {useMemo} from 'react';
-import {useTimeAgo} from '../../timeAgo';
+import TimeAgoText from '../../TimeAgoText';
 
 const icons: Record<LogStatus, string> = {
   [LogStatus.Full]: 'account-group',
@@ -40,8 +40,11 @@ function LogIcon(props: any, log: Log): React.ReactNode {
   return <List.Icon {...props} icon={icons[log.status]} />;
 }
 
+function LogDescription(props: any, log: Log) {
+  return <TimeAgoText timestamp={log.timestamp} {...props} />;
+}
+
 function LogElement({log}: LogProps): React.JSX.Element {
-  const formattedTime = useTimeAgo(log.timestamp);
   const filters = filtersStore.useStoreState(state => state.filters);
 
   const hasBadge = useMemo(
@@ -59,7 +62,7 @@ function LogElement({log}: LogProps): React.JSX.Element {
       <List.Item
         key={log.timestamp}
         title={label}
-        description={formattedTime}
+        description={props => LogDescription(props, log)}
         left={props => LogIcon(props, log)}
         right={props => hasBadge && LogBadge(props, log)}
       />

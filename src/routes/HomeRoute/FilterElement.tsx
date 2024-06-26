@@ -1,9 +1,23 @@
-import React, {useMemo} from 'react';
-import {List} from 'react-native-paper';
+import React from 'react';
+import {List, Text} from 'react-native-paper';
 
 import {Filter} from '../../stores/filter';
-import {useTimeAgo} from '../../timeAgo';
 import {FilterIcons} from './FilterIcons';
+import TimeAgoText from '../../TimeAgoText';
+
+function FilterDescription(props: any, filter: Filter): React.ReactNode {
+  if (filter.lastChecked === null) {
+    return <Text>Never checked</Text>;
+  } else {
+    return (
+      <TimeAgoText
+        {...props}
+        prefix={'Last checked '}
+        timestamp={filter.lastChecked}
+      />
+    );
+  }
+}
 
 export function FilterElement({
   filter,
@@ -12,19 +26,10 @@ export function FilterElement({
   filter: Filter;
   filterIndex: number;
 }): React.JSX.Element {
-  const formattedLastChecked = useTimeAgo(filter.lastChecked || 0);
-
-  const formattedTime = useMemo(() => {
-    if (filter.lastChecked === null) {
-      return 'Never checked';
-    }
-    return `Last checked ${formattedLastChecked}`;
-  }, [filter.lastChecked, formattedLastChecked]);
-
   return (
     <List.Item
       title={filter.name}
-      description={formattedTime}
+      description={props => FilterDescription(props, filter)}
       right={props => FilterIcons(props, filterIndex)}
     />
   );
