@@ -1,10 +1,9 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {List, useTheme} from 'react-native-paper';
 
-import {Log, LogStatus} from '../../stores/logs';
-import filtersStore from '../../stores/filter';
-import {useMemo} from 'react';
-import TimeAgoText from '../../TimeAgoText';
+import {Log, LogStatus} from '../../../stores/logs';
+import filtersStore from '../../../stores/filter';
+import TimeAgoText from '../../../TimeAgoText';
 
 const icons: Record<LogStatus, string> = {
   [LogStatus.Full]: 'account-group',
@@ -53,7 +52,8 @@ function LogElement({log}: LogProps): React.JSX.Element {
   );
 
   const label = useMemo(() => {
-    const filterName = filters.find(f => f.id === log.filterID)?.name;
+    const filterName =
+      log.oldFilterName ?? filters.find(f => f.id === log.filterID)?.name;
     return labels[log.status] + ' • ' + filterName;
   }, [filters, log]);
 

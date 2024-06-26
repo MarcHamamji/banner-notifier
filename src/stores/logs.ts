@@ -5,7 +5,9 @@ import {
   computed,
   createContextStore,
 } from 'easy-peasy';
+
 import persist from './persist';
+import {Filter} from './filter';
 
 export enum LogStatus {
   Full = 'full',
@@ -14,12 +16,21 @@ export enum LogStatus {
   NetworkError = 'net_error',
 }
 
-export interface Log {
-  status: LogStatus;
-  timestamp: number;
-  seen: boolean;
-  filterID: number;
-}
+export type Log =
+  | {
+      status: LogStatus;
+      timestamp: number;
+      seen: boolean;
+      filterID: number;
+      oldFilterName: null;
+    }
+  | {
+      status: LogStatus;
+      timestamp: number;
+      seen: boolean;
+      filterID: null;
+      oldFilterName: string;
+    };
 
 interface LogsModel {
   logs: Log[];
@@ -27,6 +38,7 @@ interface LogsModel {
   clearLogs: Action<LogsModel>;
   markAllAsSeen: Action<LogsModel>;
   badgeNeeded: Computed<LogsModel, boolean>;
+  onFilterDeleted: Action<LogsModel, Filter>;
 }
 
 const logsStore = createContextStore<LogsModel>(
@@ -49,6 +61,19 @@ const logsStore = createContextStore<LogsModel>(
     }),
     markAllAsSeen: action(state => {
       state.logs = state.logs.map(log => ({...log, seen: true}));
+    }),
+    onFilterDeleted: action((state, filter) => {
+      state.logs = state.logs.map(log => {
+        if (log.filterID === filter.id) {
+          return {
+            ...log,
+            oldFilterName: filter.name,
+            filterID: null,
+          };
+        } else {
+          return log;
+        }
+      });
     }),
   }),
 );

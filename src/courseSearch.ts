@@ -26,6 +26,7 @@ export async function searchCourseAndCreateLog(
 
   let log: Log = {
     filterID,
+    oldFilterName: null,
     timestamp: requestTime,
     status: LogStatus.Full,
     seen: false,

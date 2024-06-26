@@ -1,9 +1,9 @@
 import React from 'react';
 
 import {ScrollView} from 'react-native';
-import logsStore from '../../stores/logs';
+import logsStore from '../../../stores/logs';
 import LogElement from './LogElement';
-import {FAB, Text} from 'react-native-paper';
+import {Appbar, FAB, Text} from 'react-native-paper';
 
 function LogsRoute(): React.JSX.Element {
   const logs = logsStore.useStoreState(state => state.logs);
@@ -11,6 +11,9 @@ function LogsRoute(): React.JSX.Element {
 
   return (
     <>
+      <Appbar.Header>
+        <Appbar.Content title={'Logs'} />
+      </Appbar.Header>
       <FAB
         icon="delete"
         label="Clear"

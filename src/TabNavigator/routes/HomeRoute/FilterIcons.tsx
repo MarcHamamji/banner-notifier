@@ -1,9 +1,9 @@
 import React, {useCallback, useState} from 'react';
 import {IconButton, Menu, Portal, Snackbar} from 'react-native-paper';
-import useFiltersStore from '../../stores/filter';
-import useSettingsStore from '../../stores/settings';
-import useLogsStore, {LogStatus} from '../../stores/logs';
-import {searchCourseAndCreateLog} from '../../courseSearch';
+import useFiltersStore from '../../../stores/filter';
+import useSettingsStore from '../../../stores/settings';
+import useLogsStore, {LogStatus} from '../../../stores/logs';
+import {searchCourseAndCreateLog} from '../../../courseSearch';
 import {Vibration} from 'react-native';
 
 export function FilterIcons(
@@ -20,6 +20,9 @@ export function FilterIcons(
     state => state.deleteFilter,
   );
   const addLog = useLogsStore.useStoreActions(state => state.addLog);
+  const onFilterDelete = useLogsStore.useStoreActions(
+    state => state.onFilterDeleted,
+  );
 
   const setLastChecked = useFiltersStore.useStoreActions(
     state => state.setLastChecked,
@@ -59,9 +62,10 @@ export function FilterIcons(
   const onDelete = useCallback(() => {
     closeMenu();
     setTimeout(() => {
+      onFilterDelete(filters[filterIndex]);
       deleteFilter(filterIndex);
     }, 200);
-  }, [deleteFilter, filterIndex]);
+  }, [deleteFilter, filterIndex, filters, onFilterDelete]);
 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 

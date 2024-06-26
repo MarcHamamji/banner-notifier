@@ -1,11 +1,12 @@
 import React from 'react';
 
 import {ScrollView} from 'react-native';
-import filtersStore from '../../stores/filter';
-import {FilterElement} from './FilterElement';
-import {FAB} from 'react-native-paper';
 
-function HomeRoute(): React.JSX.Element {
+import filtersStore from '../../../stores/filter';
+import {FAB} from 'react-native-paper';
+import {FilterElement} from './FilterElement';
+
+function FiltersView() {
   const filters = filtersStore.useStoreState(state => state.filters);
 
   return (
@@ -34,4 +35,4 @@ function HomeRoute(): React.JSX.Element {
   );
 }
 
-export default HomeRoute;
+export default FiltersView;
