@@ -3,7 +3,7 @@ import {List, Text} from 'react-native-paper';
 
 import {Filter} from '../../../stores/filter';
 import {FilterIcons} from './FilterIcons';
-import TimeAgoText from '../../../TimeAgoText';
+import TimeAgoText from '../../../components/TimeAgoText';
 
 function FilterDescription(props: any, filter: Filter): React.ReactNode {
   if (filter.lastChecked === null) {

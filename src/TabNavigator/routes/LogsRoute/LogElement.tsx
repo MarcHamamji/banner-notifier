@@ -3,7 +3,7 @@ import {List, useTheme} from 'react-native-paper';
 
 import {Log, LogStatus} from '../../../stores/logs';
 import filtersStore from '../../../stores/filter';
-import TimeAgoText from '../../../TimeAgoText';
+import TimeAgoText from '../../../components/TimeAgoText';
 
 const icons: Record<LogStatus, string> = {
   [LogStatus.Full]: 'account-group',
