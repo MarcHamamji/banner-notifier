@@ -5,13 +5,12 @@ import useSettingsStore from '../../../stores/settings';
 import useLogsStore, {LogStatus} from '../../../stores/logs';
 import {searchCourseAndCreateLog} from '../../../courseSearch';
 import {Vibration} from 'react-native';
+import {useLoadingWithoutData} from '../../../useLoading';
 
 export function FilterIcons(
   props: any,
   filterIndex: number,
 ): React.JSX.Element {
-  const [loading, setLoading] = useState(false);
-
   const bannerServerURL = useSettingsStore.useStoreState(
     state => state.bannerServerURL,
   );
@@ -28,13 +27,7 @@ export function FilterIcons(
     state => state.setLastChecked,
   );
 
-  const onPress = useCallback(async () => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-
+  const runFilter = useCallback(async () => {
     const filter = filters[filterIndex];
     const log = await searchCourseAndCreateLog(
       bannerServerURL,
@@ -52,8 +45,11 @@ export function FilterIcons(
     addLog(log);
 
     setLastChecked({index: filterIndex, time: Date.now()});
-    setLoading(false);
-  }, [loading, filters, filterIndex, bannerServerURL, addLog, setLastChecked]);
+  }, [addLog, bannerServerURL, filterIndex, filters, setLastChecked]);
+
+  const [loading, trigger] = useLoadingWithoutData({
+    fetcher: runFilter,
+  });
 
   const [menuVisible, setMenuVisible] = useState(false);
   const openMenu = () => setMenuVisible(true);
@@ -85,7 +81,7 @@ export function FilterIcons(
       <IconButton
         {...props}
         icon="play"
-        onPress={onPress}
+        onPress={trigger}
         loading={loading}
         disabled={loading}
       />
