@@ -14,7 +14,30 @@ export function removeNullValues(
   obj: Record<string, string | number | boolean | null>,
 ): Record<string, string | number | boolean> {
   return Object.fromEntries(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    Object.entries(obj).filter(([key, value]) => value !== null),
+    Object.entries(obj).filter(([, value]) => value !== null),
   ) as Record<string, string | number | boolean>;
+}
+
+const entities = [
+  ['amp', '&'],
+  ['apos', "'"],
+  ['#x27', "'"],
+  ['#x2F', '/'],
+  ['#39', "'"],
+  ['#47', '/'],
+  ['lt', '<'],
+  ['gt', '>'],
+  ['nbsp', ' '],
+  ['quot', '"'],
+];
+
+export function decodeHTMLEntities(text: string) {
+  for (let i = 0, max = entities.length; i < max; ++i) {
+    text = text.replace(
+      new RegExp('&' + entities[i][0] + ';', 'g'),
+      entities[i][1],
+    );
+  }
+
+  return text;
 }

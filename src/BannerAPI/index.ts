@@ -76,7 +76,10 @@ export default class BannerAPI {
       url,
     );
 
-    return searchResults;
+    return searchResults.map(field => ({
+      code: field.code,
+      description: utils.decodeHTMLEntities(field.description),
+    }));
   }
 
   async searchTerms(searchParameters?: ListSearchParameters) {
