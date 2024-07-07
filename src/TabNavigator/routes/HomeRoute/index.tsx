@@ -1,19 +1,25 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 
 import {ScrollView} from 'react-native';
 import {Appbar, FAB} from 'react-native-paper';
 
 import {FilterElement} from './FilterElement';
 import filtersStore from '../../../stores/filter';
+import CreateFilterDialog from './CreateFilterDialog';
 
 function HomeRoute(): React.JSX.Element {
   const filters = filtersStore.useStoreState(state => state.filters);
 
+  const [dialogVisible, setDialogVisible] = useState(false);
+
+  const openDialog = useCallback(() => setDialogVisible(true), []);
+
   return (
     <>
-      <Appbar.Header>
-        <Appbar.Content title={'Logs'} />
-      </Appbar.Header>
+      <CreateFilterDialog
+        visible={dialogVisible}
+        setVisible={setDialogVisible}
+      />
       <FAB
         icon="plus"
         label="Create"
@@ -24,8 +30,12 @@ function HomeRoute(): React.JSX.Element {
           bottom: 0,
           zIndex: 100,
         }}
-        onPress={() => {}}
+        onPress={openDialog}
       />
+
+      <Appbar.Header>
+        <Appbar.Content title={'Home'} />
+      </Appbar.Header>
       <ScrollView
         style={{
           paddingLeft: 16,

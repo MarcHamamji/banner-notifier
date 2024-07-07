@@ -14,6 +14,7 @@ interface FiltersModel {
   filters: Filter[];
   setLastChecked: Action<FiltersModel, {index: number; time: number}>;
   deleteFilter: Action<FiltersModel, number>;
+  createFilter: Action<FiltersModel, Filter>;
 }
 
 const filtersStore = createContextStore<FiltersModel>(
@@ -34,6 +35,9 @@ const filtersStore = createContextStore<FiltersModel>(
     }),
     deleteFilter: action((state, index) => {
       state.filters.splice(index, 1);
+    }),
+    createFilter: action((state, filter) => {
+      state.filters.push(filter);
     }),
   }),
 );
