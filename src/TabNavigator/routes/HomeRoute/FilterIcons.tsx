@@ -6,11 +6,17 @@ import useLogsStore, {LogStatus} from '../../../stores/logs';
 import {searchCourseAndCreateLog} from '../../../courseSearch';
 import {Vibration} from 'react-native';
 import {useLoadingWithoutData} from '../../../useLoading';
+import {useNavigation} from '@react-navigation/native';
+import {StackParamList} from '../../../Main';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 export function FilterIcons(
   props: any,
   filterIndex: number,
 ): React.JSX.Element {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<StackParamList, 'Tab Navigator'>>();
+
   const bannerServerURL = useSettingsStore.useStoreState(
     state => state.bannerServerURL,
   );
@@ -55,6 +61,11 @@ export function FilterIcons(
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
 
+  const onEdit = useCallback(() => {
+    closeMenu();
+    navigation.navigate('Filter Editor', {filterID: filters[filterIndex].id});
+  }, [filterIndex, filters, navigation]);
+
   const onDelete = useCallback(() => {
     closeMenu();
     setTimeout(() => {
@@ -89,6 +100,7 @@ export function FilterIcons(
         visible={menuVisible}
         onDismiss={closeMenu}
         anchor={<IconButton onPress={openMenu} icon="dots-vertical" />}>
+        <Menu.Item onPress={onEdit} title="Edit" />
         <Menu.Item onPress={onDelete} title="Delete" />
       </Menu>
     </>

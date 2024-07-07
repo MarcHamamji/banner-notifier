@@ -7,8 +7,14 @@ import logsStore from './stores/logs';
 import settingsStore from './stores/settings';
 import filtersStore from './stores/filter';
 import TabNavigator from './TabNavigator';
+import FilterEditor from './FilterEditor';
 
-const Stack = createNativeStackNavigator();
+export type StackParamList = {
+  'Tab Navigator': undefined;
+  'Filter Editor': {filterID: number};
+};
+
+const Stack = createNativeStackNavigator<StackParamList>();
 
 function Main(): React.JSX.Element {
   const logsIsRehydrated = logsStore.useStoreRehydrated();
@@ -28,8 +34,9 @@ function Main(): React.JSX.Element {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        // @ts-ignore Stack.Screen is exprecting Tab Navigator as the name
         name="Filter Editor"
-        component={TabNavigator} // MAKE THIS THE FILTER EDITOR
+        component={FilterEditor}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
