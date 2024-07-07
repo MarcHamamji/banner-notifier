@@ -55,14 +55,14 @@ export default class BannerAPI {
   }
 
   private async searchFieldOptionsByFieldPath(
-    term: string,
+    termCode: string,
     fieldPath: string,
     searchParameters?: ListSearchParameters,
     includeTerm = true,
   ) {
     const parameters = {
       searchTerm: searchParameters?.query ?? '',
-      term: includeTerm ? term : null,
+      term: includeTerm ? termCode : null,
       offset: (searchParameters?.pagination?.offset ?? 0) + 1,
       max: searchParameters?.pagination?.max ?? 10,
     };
@@ -89,11 +89,15 @@ export default class BannerAPI {
   }
 
   async searchFieldOptions(
-    term: string,
+    termCode: string,
     field: SearchableField,
     searchParameters?: ListSearchParameters,
   ) {
-    return this.searchFieldOptionsByFieldPath(term, field, searchParameters);
+    return this.searchFieldOptionsByFieldPath(
+      termCode,
+      field,
+      searchParameters,
+    );
   }
 
   async searchCourse(
